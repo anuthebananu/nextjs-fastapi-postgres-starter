@@ -5,7 +5,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 
-export default async function Page() {
+export default function Page() {
   // const message = await fetch(`${apiUrl}/messages?conversation_id=1`).then((res) => res.json())
   const [inputMessage, setInputMessage] = useState('')
   const handleSendMessage = () => {
