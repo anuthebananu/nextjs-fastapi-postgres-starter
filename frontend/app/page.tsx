@@ -1,21 +1,37 @@
-import Image from "next/image";
+'use client'
 
-type User = {
-  id: string;
-  name: string;
-};
-
+import { useState } from "react";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export default async function Home() {
-  console.log("fetch", `${apiUrl}/users/me`);
-  const user: User = await fetch(`${apiUrl}/users/me`).then((res) =>
-    res.json()
-  );
+
+
+export default async function Page() {
+  // const message = await fetch(`${apiUrl}/messages?conversation_id=1`).then((res) => res.json())
+  const [inputMessage, setInputMessage] = useState('')
+  const handleSendMessage = () => {
+    console.log("Sending message", inputMessage)
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello, {user.name}!
-    </main>
-  );
+    <div className="flex flex-col h-screen bg-gray-100">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <p>Messages go here</p>
+      </div>
+      <div className="bg-white p-4 flex items-center">
+        <input
+          type="text"
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          className="flex-1 border rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Type a message..."
+          />
+        <button
+          onClick={handleSendMessage}
+          className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Send
+        </button>
+      </div>
+      </div>
+  )
 }
