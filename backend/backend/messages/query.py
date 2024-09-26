@@ -1,6 +1,7 @@
 from typing import Optional
 from uuid import UUID, uuid4
 from models import Content, Conversation, Message
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from db_engine import engine
 
@@ -8,10 +9,10 @@ class MessagesQuery:
     def __init__(self, session: AsyncSession):
          self.session = session
 
-    async def get_messages_for_conversation(self, conversation_id: UUID):
+    async def get_messages_for_conversation(self, conversation_id: UUID) -> list[Message]:
             # TODO don't create a new session every time, use a shared session
             # throughout the app
-            return self.session.get(Message, {"conversation_id": conversation_id})
+            return await self.session.execute(select(Message).where(Message.conversation_id == conversation_id))
     
     async def create_conversation(self, user_id: int) -> Conversation:
             conversation = Conversation(id=uuid4(), owner_id=user_id)

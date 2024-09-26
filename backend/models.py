@@ -4,6 +4,7 @@ from uuid import UUID, uuid4
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship
 
 
 class Base(DeclarativeBase):
@@ -50,6 +51,10 @@ class Message(Base):
     status: Mapped[str] = mapped_column(String)
     sender_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     content_id: Mapped[UUID] = mapped_column(ForeignKey("contents.id"))
+    content: Mapped["Content"] = relationship(Content)
     conversation_id: Mapped[UUID] = mapped_column(ForeignKey("conversations.id"))
+
+    def __repr__(self) -> str:
+        return f"Message(id={self.id} content={self.content} conversation_id={self.conversation_id})"
 
 
